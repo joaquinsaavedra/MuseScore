@@ -294,6 +294,18 @@ void VstAudioClient::setUpProcessData()
 
     m_processContext.sampleRate = m_samplesInfo.sampleRate;
 
+    /*
+        TODO: The host should provide the global tempo to the plugin.
+
+        Maybe using the following methods from the PlaybackControllerMock:     
+        
+            notation::MeasureBeat currentBeat() const override;
+            muse::audio::secs_t beatToSecs(int measureIndex, int beatIndex) const override;
+    */
+    muse::audio::secs_t hostTimeInSecs = 0.0; // TODO:  retrieve the information provided by the host ()
+    m_processContext.projectTimeSamples = std::floor(m_samplesInfo.sampleRate * hostTimeInSecs);
+
+
     m_processData.inputEvents = &m_eventList;
     m_processData.inputParameterChanges = &m_paramChanges;
     m_processData.processContext = &m_processContext;
